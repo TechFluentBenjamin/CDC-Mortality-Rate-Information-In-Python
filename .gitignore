@@ -10,4 +10,13 @@ Icon\r
 
 # Thumbnails
 ._*
+__pycache__/
+*.py[cod]
+*$py.class
+
+venv/
+env/
+.env/
+
+ø.vscode/
 
