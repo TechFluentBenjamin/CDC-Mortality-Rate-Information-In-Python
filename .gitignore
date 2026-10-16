@@ -1,0 +1,13 @@
+Suggestions.rtf
+NCHS_-_Childhood_Mortality_Rates.csv
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon de-facto (used by Finder)
+Icon\r
+
+# Thumbnails
+._*
+
