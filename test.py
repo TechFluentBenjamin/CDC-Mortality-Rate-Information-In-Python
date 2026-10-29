@@ -1,9 +1,15 @@
 import unittest
+#imported unittest.mock for mocking input and output in tests
+from unittest.mock import patch
 import pandas as pd
 import numpy as np
+#imported io and sys for capturing printed output during tests
+import io
+import sys
+#imported main to test the menu functionality
+import main
 
 
-# This represents the logic inside your Program 2
 def detect_anomalies(df):
     groups = df.groupby("Age Group")["Death Rate"]
     q1 = groups.transform("quantile", q=0.25)
@@ -45,6 +51,35 @@ class TestMortalityLogic(unittest.TestCase):
         """Test that Death Rate remains a float after processing."""
         result_df = detect_anomalies(self.test_df)
         self.assertEqual(result_df["Death Rate"].dtype, np.float64)
+
+#Added a test for main.py
+class TestMainMenu(unittest.TestCase):
+    @patch('builtins.input', side_effect=['1', '4'])
+    @patch('program_dashboard.run_dashboard')
+    def test_menu_exit_flow(self, mock_dashboard, mock_input):
+        """Test that selecting option 1 then 4 exits the program correctly."""
+        # We use side_effect to simulate user typing '1' then '4'
+        # This tests if the loop runs and eventually hits sys.exit()
+        with self.assertRaises(SystemExit) as cm:
+            main.main()
+        
+        # Verify that the exit code was 0 (sys.exit(0))
+        self.assertEqual(cm.exception.code, 0)
+        # Verify that the dashboard function was actually called
+        mock_dashboard.assert_called_once()
+    @patch('builtins.input', side_effect=['5', '4'])
+    def test_invalid_choice(self, mock_input):
+        """Test how the program handles an invalid input."""
+        # We capture stdout to see if the error message prints
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        
+        with self.assertRaises(SystemExit):
+            main.main()
+            
+        sys.stdout = sys.__stdout__  # Reset redirect
+        self.assertIn("Invalid choice", captured_output.getvalue())
+
 
 
 if __name__ == "__main__":

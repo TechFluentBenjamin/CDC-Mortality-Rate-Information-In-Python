@@ -1,8 +1,10 @@
 # main.py
+#added sys, and changed "break" to sys.exit(0) to ensure the program exits cleanly when the user chooses to exit.
 
 import program_dashboard as p1
 import program_anomaly as p2
 import program_bubbles as p3
+import sys
 
 
 def show_menu():
@@ -35,7 +37,7 @@ def main():
 
         elif choice == "4":
             print("Exiting program. Goodbye!")
-            break
+            sys.exit(0)
 
         else:
             print("Invalid choice, please try again.")
